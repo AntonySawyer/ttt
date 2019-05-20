@@ -1,0 +1,19 @@
+.square {
+	width: 100px;
+	height: 100px;
+	border: 1px solid #999;
+	background: #fff;
+	float: left;
+	font-size: 64px;
+	margin-right: -1px;
+	margin-top: -1px;
+  }
+
+.square:focus {
+	outline: none;
+}
+  
+.square:hover {
+	background-color: rgb(221, 212, 212);
+}
+  

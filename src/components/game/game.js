@@ -1,7 +1,8 @@
 import React from 'react';
 import Board from '../board/board';
+import GameControls from '../gameControls/gameControls';
 import checkWinner from '../../utils/checkWinner';
-
+import './game.css';
 
 export default class Game extends React.Component {
     constructor(props) {
@@ -13,7 +14,7 @@ export default class Game extends React.Component {
         };
     }
 
-    handleClick(i) {
+    makeMove(i) {
         const squares = [...this.state.squares];
         if (!(squares[i] || checkWinner(squares))) {
             squares[i] = this.state.turn;
@@ -23,6 +24,7 @@ export default class Game extends React.Component {
                             lastMove: lastMove
                         });
             this.changeTurn();
+            console.log(squares.filter(i => i).length % 2 === 1);
         }
     }
 
@@ -49,7 +51,7 @@ export default class Game extends React.Component {
     }
 
     unsetClasses() {
-        document.querySelectorAll('.gameOver').forEach(el => el.classList.remove('gameOver'));    
+        document.querySelectorAll('.gameOver').forEach(el => el.classList.remove('gameOver'));
     }
 
     render() {
@@ -60,15 +62,14 @@ export default class Game extends React.Component {
       return (
         <div className="game">
             <div className="gameStatus">{status}</div>
-            <div>
-                <Board squares={this.state.squares} onClick={(i) => this.handleClick(i)} />
-            </div>
-            <div className="gameControls">
-                <button disabled={this.state.lastMove.length !== 0} onClick={() => this.changeTurn()}>Change first player</button>
-                <button onClick={() => this.undoMove()}>Undo</button>
-                <button onClick={() => this.clearField()}>Clear</button>
-            </div>
+            <Board squares={this.state.squares} onClick={(i) => this.makeMove(i)} />
+            <GameControls disabledControls={this.state.lastMove.length !== 0} 
+                            changeOnClick={() => this.changeTurn()} 
+                            undoOnClick={() => this.undoMove()} 
+                            clearOnClick={() => this.clearField()} />
         </div>
       );
     }
   }
+
+
