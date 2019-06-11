@@ -6,7 +6,9 @@ export default (props) => {
 		<div className="gameControls">
 				<button disabled={props.disabledControls} onClick={props.changeOnClick}>Change first player</button>
 				<button disabled={!props.disabledControls} onClick={props.undoOnClick}>Undo</button>
-				<button disabled={!props.disabledControls} onClick={props.clearOnClick}>Clear</button>
+				<button onClick={props.clearOnClick}>
+					{(props.disabledControls && 'Clear') || 'New game'}
+				</button>
 		</div>
 	);
 }
