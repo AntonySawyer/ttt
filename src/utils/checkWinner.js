@@ -1,3 +1,5 @@
+import { hightlightWinner } from './decorators';
+
 export default function checkWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -13,9 +15,7 @@ export default function checkWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      document.querySelectorAll('.square')[a].classList.add('gameOver');
-      document.querySelectorAll('.square')[b].classList.add('gameOver');
-      document.querySelectorAll('.square')[c].classList.add('gameOver');
+      hightlightWinner(a, b, c);
       return `${squares[a]} is win!`;
     }
   }

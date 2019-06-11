@@ -6,6 +6,7 @@ import Enemies from '../enemies/enemeis';
 import Status from '../status/status';
 import { aiFirst, aiSecond } from '../../utils/ai';
 import checkWinner from '../../utils/checkWinner';
+import { unsetClasses } from '../../utils/decorators';
 import './game.css';
 
 export default class Game extends React.Component {
@@ -74,19 +75,17 @@ export default class Game extends React.Component {
             this.changeTurn();
         }
         this.setState({squares: newSquares});
-        this.unsetClasses();
+        unsetClasses();
     }
 
     clearField() {
         this.setState({squares: Array(9).fill(),
                         lastMove: []
         });
-        this.unsetClasses();
+        unsetClasses();
     }
 
-    unsetClasses() {
-        document.querySelectorAll('.gameOver').forEach(el => el.classList.remove('gameOver'));
-    }
+
 
     render() {
         const winner = checkWinner(this.state.squares);

@@ -10,7 +10,7 @@ export function aiSecond(arr, aiMark) {
     const plMark = (aiMark === 'X' ? 'O' : 'X');
     const winForAI = checkRow(arr, aiMark).concat(checkColumn(arr, aiMark), checkDiogonal(arr, aiMark));
     const winForPL = checkRow(arr, plMark).concat(checkColumn(arr, plMark), checkDiogonal(arr, plMark));
-    const bestMoves = winForAI.sort((a,b) => Math.random()).concat(winForPL.sort((a,b) => Math.random()));
+    const bestMoves = winForAI.concat(winForPL);
     const filteredBestMove = bestMoves.filter(move => arr[move] !== aiMark && arr[move] !== plMark);
     if (filteredBestMove.length !== 0) {
         return filteredBestMove[0];
