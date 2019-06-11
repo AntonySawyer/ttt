@@ -2,8 +2,9 @@ import React from 'react';
 
 import Board from '../board/board';
 import GameControls from '../gameControls/gameControls';
+import Enemies from '../enemies/enemeis';
 import Status from '../status/status';
-import { aiEasy } from '../../utils/aiEasy';
+import { aiFirst, aiSecond } from '../../utils/ai';
 import checkWinner from '../../utils/checkWinner';
 import './game.css';
 
@@ -13,6 +14,7 @@ export default class Game extends React.Component {
         this.state = {
             squares: Array(9).fill(),
             lastMove: [],
+            gameInProgress: false,
             turn: 'X',
             aiMove: false,
             aiMark: 'O'
@@ -25,26 +27,41 @@ export default class Game extends React.Component {
             squares[i] = this.state.turn;
             const lastMove = [...this.state.lastMove];
             lastMove.push(i);
-            if (this.state.aiMove && this.state.aiMark !== this.state.turn) {
-                const aiMove = aiEasy(squares);
+            if (this.state.aiMove && this.state.aiMark !== this.state.turn && !checkWinner(squares)) {
+                const aiMove = this.AITurn(squares);
                 squares[aiMove] = this.state.aiMark;
                 lastMove.push(aiMove);
-            } else {
+                } else {
                 this.changeTurn();
             }
             this.setState({squares: squares, 
-                lastMove: lastMove
+                lastMove: lastMove,
+                gameInProgress: (!Boolean(checkWinner(squares)))
             });
         }
     }
 
     initAI() {
-        this.setState({aiMove: document.querySelector('#easyComp').checked});
+        const choosen = document.querySelector('input[name=gameMode]:checked');
+        this.setState({aiMove: !(choosen.id === 'human'), 
+                        gameMode: choosen.id});
+    }
+
+    AITurn(squares) {
+        switch (this.state.gameMode) {
+            case 'aiFirst':
+                return aiFirst(squares);                
+            case 'aiSecond':
+                return aiSecond(squares, this.state.aiMark);
+            default:
+                break;
+        }
     }
 
     changeTurn() {
-        const newTurn = (this.state.turn === 'X' ? 'O' : 'X');
-        this.setState({turn: newTurn});
+        const oldTurn = this.state.turn;
+        const oldAIMark = this.state.aiMark;
+        this.setState({turn: oldAIMark, aiMark: oldTurn});
     }
 
     undoMove() {
@@ -62,8 +79,7 @@ export default class Game extends React.Component {
 
     clearField() {
         this.setState({squares: Array(9).fill(),
-                        lastMove: [],
-                        turn: 'X'
+                        lastMove: []
         });
         this.unsetClasses();
     }
@@ -74,20 +90,16 @@ export default class Game extends React.Component {
 
     render() {
         const winner = checkWinner(this.state.squares);
-        const isGameStarted = this.state.lastMove.length !== 0;
 
       return (
         <div className="game">
             <Status gameOver={winner} turn={this.state.turn} />
             <Board squares={this.state.squares} onClick={(i) => this.makeMove(i)} />
-            <GameControls disabledControls={isGameStarted} 
-                            changeOnClick={() => this.changeTurn()} 
+            <GameControls disabledControls={this.state.gameInProgress}
+                            changeOnClick={() => this.changeTurn()}
                             undoOnClick={() => this.undoMove()} 
                             clearOnClick={() => this.clearField()} />
-            <label>
-                <input type="checkbox" id="easyComp" disabled={isGameStarted} onChange={() => this.initAI()} />
-            easy AI
-            </label>
+            <Enemies disabled={this.state.gameInProgress} onChange={() => this.initAI()} />
         </div>
       );
     }
