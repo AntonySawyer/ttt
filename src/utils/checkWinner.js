@@ -16,12 +16,12 @@ export default function checkWinner(squares) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
       hightlightWinner(a, b, c);
-      return `${squares[a]} is win!`;
+      return `${squares[a]} is win`;
     }
   }
 
   if (squares.filter(item => item).length === 9) {
-    return 'draw.';
+    return 'draw';
 }
   return false;
 }

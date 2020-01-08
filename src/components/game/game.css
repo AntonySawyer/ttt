@@ -6,12 +6,3 @@
 	height: 350px;
 	margin: 0 auto;
 }
-	
-.gameStatus {
-	margin: 20px auto;
-	font-size: 24px;
-}
-	
-.gameOver {
-	color: red;
-}

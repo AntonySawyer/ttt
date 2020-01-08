@@ -2,10 +2,10 @@ import React from 'react';
 import Square from './square/square';
 import './board.css';
 
-export default (props) => {
+export default ({squares, onClick}) => {
   return (
     <div className="gameBoard">
-      {props.squares.map((sq, i) => <Square key={i} value={sq} onClick={() => props.onClick(i)} />)}
+      {squares.map((value, index) => <Square key={index} value={value} onClick={() => onClick(index)} />)}
     </div>
   );
 }

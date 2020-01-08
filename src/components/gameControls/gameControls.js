@@ -1,13 +1,13 @@
 import React from 'react';
 import './gameControls.css';
 
-export default (props) => {
+export default ({disabledControls, changeOnClick, undoOnClick, clearOnClick}) => {
 	return (
 		<div className="gameControls">
-				<button disabled={props.disabledControls} onClick={props.changeOnClick}>Change first player</button>
-				<button disabled={!props.disabledControls} onClick={props.undoOnClick}>Undo</button>
-				<button onClick={props.clearOnClick}>
-					{(props.disabledControls && 'Clear') || 'New game'}
+				<button disabled={disabledControls} onClick={changeOnClick}>Change avatar</button>
+				<button disabled={!disabledControls} onClick={undoOnClick}>Undo</button>
+				<button onClick={clearOnClick}>
+					{(disabledControls && 'Clear') || 'New game'}
 				</button>
 		</div>
 	);
